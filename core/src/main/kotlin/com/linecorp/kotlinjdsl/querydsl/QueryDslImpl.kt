@@ -93,6 +93,10 @@ open class QueryDslImpl<T>(
         fromClause = FromClause(entity)
     }
 
+    override fun selectFrom(distinct: Boolean, entity: EntitySpec<T>): SingleSelectClause<T> {
+        return select(distinct = distinct, expression = entity as ExpressionSpec<T>).also { from(entity) }
+    }
+
     override fun <T, R> join(left: EntitySpec<T>, right: EntitySpec<R>, relation: Relation<T, R?>, joinType: JoinType) {
         lazyJoins().add(SimpleJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }

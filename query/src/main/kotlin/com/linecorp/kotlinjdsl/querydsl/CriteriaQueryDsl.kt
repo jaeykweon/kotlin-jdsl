@@ -11,12 +11,14 @@ import com.linecorp.kotlinjdsl.querydsl.limit.LimitDsl
 import com.linecorp.kotlinjdsl.querydsl.orderby.OrderByDsl
 import com.linecorp.kotlinjdsl.querydsl.select.MultiSelectDsl
 import com.linecorp.kotlinjdsl.querydsl.select.SingleSelectDsl
+import com.linecorp.kotlinjdsl.querydsl.selectFrom.SingleSelectFromDsl
 import com.linecorp.kotlinjdsl.querydsl.where.WhereDsl
 
 interface CriteriaQueryDsl<T> :
     SingleSelectDsl<T>,
     MultiSelectDsl<T>,
     FromDsl,
+    SingleSelectFromDsl<T>,
     JoinDsl,
     FetchDsl,
     RelationDsl,

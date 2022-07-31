@@ -52,16 +52,14 @@ class BookService(
 
     fun findById(id: Long): Book {
         return queryFactory.singleQuery {
-            select(entity(Book::class))
-            from(entity(Book::class))
+            selectFrom(entity(Book::class))
             where(col(Book::id).equal(id))
         }
     }
 
     fun findAll(spec: FindBookSpec): List<Book> {
         return queryFactory.listQuery {
-            select(entity(Book::class))
-            from(entity(Book::class))
+            selectFrom(entity(Book::class))
             where(col(Book::name).like("%${spec.name}%"))
         }
     }

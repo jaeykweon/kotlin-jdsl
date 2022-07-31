@@ -88,6 +88,10 @@ open class ReactiveQueryDslImpl<T>(
         fromClause = FromClause(entity)
     }
 
+    override fun selectFrom(distinct:Boolean, entity: EntitySpec<T>): SingleSelectClause<T> {
+        return select(distinct, entity as ExpressionSpec<T>).apply { from(entity) }
+    }
+
     override fun <T, R> join(left: EntitySpec<T>, right: EntitySpec<R>, relation: Relation<T, R?>, joinType: JoinType) {
         lazyJoins().add(SimpleJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
@@ -124,8 +128,8 @@ open class ReactiveQueryDslImpl<T>(
         lazyJoins().add(FetchJoinSpec(left = left, right = right, path = relation.path, joinType = joinType))
     }
 
-    override fun where(predicate: PredicateSpec) {
-        lazyWheres().add(predicate)
+    override fun where(predicate: PredicateSpec?) {
+        predicate?.let { lazyWheres().add(predicate) }
     }
 
     override fun groupBy(columns: List<ExpressionSpec<*>>) {

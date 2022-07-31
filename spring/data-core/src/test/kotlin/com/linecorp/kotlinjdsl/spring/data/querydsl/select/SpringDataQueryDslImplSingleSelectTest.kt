@@ -146,6 +146,73 @@ internal class SpringDataQueryDslImplSingleSelectTest : WithKotlinJdslAssertions
         )
     }
 
+
+    @Test
+    fun selectFromEntity() {
+        // when
+        val actual = SpringDataQueryDslImpl(Data1::class.java).apply {
+            selectFrom(distinct = true, entity(Data1::class))
+        }
+
+        // then
+        val criteriaQuerySpec = actual.createCriteriaQuerySpec()
+
+        assertThat(criteriaQuerySpec.select).isEqualTo(
+            SingleSelectClause(Data1::class.java, distinct = true, EntitySpec(Data1::class.java))
+        )
+
+        val subquerySpec = actual.createSubquerySpec()
+
+        assertThat(subquerySpec.select).isEqualTo(
+            SingleSelectClause(Data1::class.java, distinct = true, EntitySpec(Data1::class.java))
+        )
+
+        val pageableQuerySpec = actual.createPageableQuerySpec()
+
+        assertThat(pageableQuerySpec.select).isEqualTo(
+            SingleSelectClause(Data1::class.java, distinct = true, EntitySpec(Data1::class.java))
+        )
+
+        val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
+
+        assertThat(pageableCountQuerySpec.select).isEqualTo(
+            CountSingleSelectClause(distinct = true, EntitySpec(Data1::class.java))
+        )
+    }
+
+    @Test
+    fun selectFromNonDistinctEntity() {
+        // when
+        val actual = SpringDataQueryDslImpl(Data1::class.java).apply {
+            selectFrom(false, entity(Data1::class))
+        }
+
+        // then
+        val criteriaQuerySpec = actual.createCriteriaQuerySpec()
+
+        assertThat(criteriaQuerySpec.select).isEqualTo(
+            SingleSelectClause(Data1::class.java, distinct = false, EntitySpec(Data1::class.java))
+        )
+
+        val subquerySpec = actual.createSubquerySpec()
+
+        assertThat(subquerySpec.select).isEqualTo(
+            SingleSelectClause(Data1::class.java, distinct = false, EntitySpec(Data1::class.java))
+        )
+
+        val pageableQuerySpec = actual.createPageableQuerySpec()
+
+        assertThat(pageableQuerySpec.select).isEqualTo(
+            SingleSelectClause(Data1::class.java, distinct = false, EntitySpec(Data1::class.java))
+        )
+
+        val pageableCountQuerySpec = actual.createPageableCountQuerySpec()
+
+        assertThat(pageableCountQuerySpec.select).isEqualTo(
+            CountSingleSelectClause(distinct = false, EntitySpec(Data1::class.java))
+        )
+    }
+
     @Test
     fun selectNonDistinctExpression() {
         // when
